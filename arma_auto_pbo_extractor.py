@@ -37,7 +37,6 @@ def choose_directories(base:Path = Path('.')) -> Optional[List[str]]:
         paths = file_dialog.selectedFiles()
         return paths
 
-
 def get_pbo_list(folder_path: str) -> List[str]:
     addons_path = Path(f"{folder_path}\\addons")
     pbo_list: List[str] = []
@@ -62,14 +61,16 @@ def main():
     print(f"\nYou selected {len(mod_directories)} directories.")
     [print(mod_directory) for mod_directory in mod_directories]
     should_continue: bool = False if input("\nContinue? [Y/n]\n").lower().startswith("n") else True
-
-    for mod_directory in mod_directories:
-        pbo_list = get_pbo_list(mod_directory)
-        copy_files(destination, pbo_list)
-
     if not should_continue:
         print("Exiting.")
         exit(0)
+
+    counter = 0
+    for mod_directory in mod_directories:
+        pbo_list = get_pbo_list(mod_directory)
+        counter += len(pbo_list)
+        copy_files(destination, pbo_list)
+    print(f"Done! Copied {counter} files.") 
 
 
 if __name__ == "__main__":
